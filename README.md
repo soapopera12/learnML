@@ -1,1 +1,2 @@
-# learnML
+# Notes for ML and DS
+
