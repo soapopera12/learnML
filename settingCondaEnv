@@ -1,0 +1,48 @@
+# Install conda via
+https://docs.anaconda.com/anaconda/install/windows/
+
+# The only thing is, it’s important that you select Python 3.6 and not 2.7.
+
+# to create an environment named test
+conda create --name test
+
+# activate the new environment
+conda activate test
+
+# general system information
+systeminfo
+# check cuda version before downloading libraries
+nvcc --version
+# alternatively
+nvidia-smi
+# alternatively in linux
+cat /usr/lib/cuda/version.txt
+
+# install required libraries in windows for CUDA 11.8
+conda install numpy
+conda install pandas
+conda install matplotlib
+conda install scikit-learn
+conda install pytorch torchvision torchaudio pytorch-cuda=12.1 -c pytorch -c nvidia
+pip install torch_geometric
+pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.3.0+cu118.html
+# tensorflow-gpu and tensorflow are the same package since the release of version 2.1. Installing tensorflow alone will enable GPU acceleration.
+conda install tensorflow
+pip install tensorboardX
+# not sure what ngrok is used in GNN
+# choco install ngrok
+# installing DGL
+pip install dgl -f https://data.dgl.ai/wheels/cu116/repo.html 
+# deepsnap is a standford python library that acts as a bridge between NetworkX and PyTorch Geometric
+pip install git+https://github.com/snap-stanford/deepsnap.git
+
+# Making Your Environment Available in the Jupyter Notebooks
+# Activate your environment and install ipykernel
+conda -install ipykernel
+ipython kernel install --user --name=test
+conda deactivate test
+
+# blog
+https://medium.com/@bryant.kou/how-to-install-pytorch-on-windows-step-by-step-cc4d004adb2a
+
+

@@ -1,0 +1,64 @@
+Everything in vectors and matrices
+
+torch (Pytorch)
+
+torch
+    //
+    reshape()
+
+torch.tensor
+    // computes the gradient of the tensor
+    backward()
+
+torch.nn
+    nn.Linear(input_size, output_size)
+    Loss Functions
+        nn.MSELoss()
+        
+torch.utils.data
+    // dataloader is a function that will bring batch_size number of instances each time
+    Dataloader()
+
+
+torch.optim
+    Functions
+        // reset the gradient of all optimized parameters
+        zero_grad()
+        // backprop for all the parameters
+        step()  
+    Algorithms
+        // This is a SGD model -> infact a mini-batch it must be given parameter and learning rate
+        SGD(model.parameters(), lr=learning_rate)
+        // this is adagrad optimizer 
+        Adagrad(model.parameters(), lr=learning_rate)
+
+---------------------------------------------------------------------------------------------------------
+
+torch_geometric (Pytorch Geometric)
+
+torch_geometric.nn
+    Convolutional Layers
+        conv.MessagePassing()
+        conv.SimpleConv()
+    Aggregation Operators
+        aggr.Aggregation()
+        aggr.SumAggregation()
+    Normalization Layers
+        norm.BatchNorm()
+        norm.GraphNorm()
+    Pooling Layers
+        pool.global_add_pool()
+        pool.global_mean_pool()
+    models
+        models.MLP()
+        models.GCN()
+        models.GraphSage()
+        models.Node2Vec()
+
+---------------------------------------------------------------------------------------------------------
+
+
+Libraries
+    torchvision
+        can be used for computer vision -> has datasets, models and common image transofrmation
+
