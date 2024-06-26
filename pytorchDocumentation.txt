@@ -19,7 +19,6 @@ torch.utils.data
     // dataloader is a function that will bring batch_size number of instances each time
     Dataloader()
 
-
 torch.optim
     Functions
         // reset the gradient of all optimized parameters
@@ -31,6 +30,18 @@ torch.optim
         SGD(model.parameters(), lr=learning_rate)
         // this is adagrad optimizer 
         Adagrad(model.parameters(), lr=learning_rate)
+    
+torch.sparse
+    // By default, PyTorch stores torch.Tensor elements contiguously in physical memory. 
+    // This leads to efficient implementations of various array processing algorithms that 
+    // require fast access to elements.
+    // but graph ajacency matrix are sparse [ most values are 0 ]
+    to_sparse()
+    // PyTorch currently supports COO, CSR, CSC, BSR, and BSC - sparse matrix storage formats
+    to_sparse_csr()
+    // convert to normal form
+    to_dense() 
+
 
 ---------------------------------------------------------------------------------------------------------
 
@@ -54,6 +65,34 @@ torch_geometric.nn
         models.GCN()
         models.GraphSage()
         models.Node2Vec()
+
+torch_geometric.loader
+    // Each PyG loader accepts a Data object, which represents a graph, as well as additional
+    // parameters that control how nodes and edges are sampled into batches.
+    // Used when graph is too big to be fit in GPU
+    RandomNodeLoader
+    // loads 
+    NeighborLoader
+
+torch_geometric.transforms
+    // transforms graph data so that they have a mean of 0 and a standard deviation of 1
+    General Transforms
+    Graph Transforms
+    Vision Transforms
+
+
+torch_geometric.data 
+    // It is a module in the PyTorch Geometric library that provides classes and 
+    utilities for handling and processing graph-structured data.
+    Data Objects
+        Data(x, edge_index, edge_attribute, y)
+        HeteroData()
+        Batch()
+    Remote Backend Interfaces
+    Databases
+    PyTorch Lightning Wrappers
+    Helper Functions
+
 
 ---------------------------------------------------------------------------------------------------------
 
