@@ -8,10 +8,6 @@ questions - red
 
 Links - green
 
-This is the link to Excalidraw
-
-[https://excalidraw.com/#json=i1UW2iD_kiEFwWCRqL5Uq,b1nCADVf58OCrjqzk9GHGg](https://excalidraw.com/#json=i1UW2iD_kiEFwWCRqL5Uq,b1nCADVf58OCrjqzk9GHGg)
-
 What is a derivative?
 
 A derivative of a function represents the rate at which a function's value changes as its input changes. In simpler terms, the derivative measures how a function's output changes in response to changes in its input.
@@ -22,7 +18,9 @@ $f'(x) = \frac{df}{dx} = lim_{h \rightarrow 0} \frac{f(x+h) - f(x)}{h}$
 
 Also remember the formula of slope $= \frac{y_2 - y_1}{x_2 - x_1}$
 
-so basically the formula give you the slope of the secant line through f(x) and f(x + h)
+As f(x) should give you y and h is the change in x, so basically the formula give you the slope of the secant line through f(x) and f(x + h).
+
+Now once you have the slope of this line you can decide how much length you want to travel on this down this line. This ‘How much’ is basically learning rate.
 
 ![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled.png)
 
@@ -41,21 +39,31 @@ What are the rules of differentiation?
     $\frac{d}{dx}(g \circ f)(x) = \frac{d}{dx}(g(f(x)) = \frac{dg}{dx} \frac{df}{dx}$
     
 
-Linear Algebra
+**Linear Algebra**
 
-vector
+[https://medium.com/infinity-aka-aseem/summarizing-the-essence-of-linear-algebra-336d38add643](https://medium.com/infinity-aka-aseem/summarizing-the-essence-of-linear-algebra-336d38add643)
 
-span
+Vector
+
+In Machine learning we assume all vectors are rooted at the origin
+
+Span
 
 The span of two vectors v and w is the set of all their linear combinations i.e. av + bw.
 
-matrix and linear transformation
+Matrix and linear transformation
 
-determinant
+matrix vector multiplication is a simple way of telling what transformation a matrix does to a vector.
+
+Determinant
+
+The factor by which the area of the basis vector is changed is called the determinant. This is because transformations tend to squish or stretch space
 
 column space 
 
 null space
+
+Rank
 
 non-square matrix
 
@@ -67,87 +75,103 @@ Null space
 
 eigenvector and eigenvalue
 
+For a transformation or a Matrix M there can be vector/vectors which only scale but do not change their direction (do not transform) these vectors are eigenvectors.
+
 **Loss Types**
 
-**MSE / L2**
-
-**MAE / L1**
-
-**RMSE**
-
-**Huber loss = MAE + MSE**
-
-Robust to outliers
-
-$Huber = \frac{1}{n}\sum_{i=1}^n(y_i - \hat{y_i})^2$                                     $y_i - \hat{y_i} \le \delta$
-
-$Huber = \frac{1}{n}\sum_{i=1}^{n}\delta (|y_i -\hat{y_i}|-\frac{1}{2}\delta)$                 $y_i - \hat{y_i} > \delta$
-
-$\delta$ is the threshold hyperparameter parameter → you can set them manually
-
-**Binary Cross-Entropy Loss / Log Loss** 
-
-only for dual classes
-
-$L(y,\hat{y}) = -\frac{1}{N}\sum_{i=1}^{N}[y_i(log(\hat{y_i})+(1-y_i)log(1-\hat{y_i})]$
-
-**Categorical Cross-Entropy Loss**
-
-Categorical cross entropy is a loss function used in classification problems where each input belongs to one of multiple classes → softmax
-
-$L = -\frac{1}{m} \sum_{i=1}^{m}y_ilog(\hat{y_i})$
-
-- m is the number of classes
-- $y_i$ is the true label (one-hot encoded).
-- $\hat{y_i}$ the predicted probability for example i.
-
-example:
-
-Suppose y = [0, 1, 0] is the actual value for three classes (A, B, C) and it belongs to class B which is represented in one hot encoded form
-
-and model predicts $\hat{y}$ = [0.2, 0.7, 0.1]
-
-L = - ( 0.Log(0.2) + 1.log(0.7) + 0.Log(0.1)            → yani ki jiska jitna jyada probability value x utna less log(x) value
-
-L = -Log(0.7)
-
-L = 0.357
-
-**Sparse categorical cross entropy** 
-
-Sparse categorical cross entropy is similar to categorical cross entropy but is used when the true labels are provided as **integers** instead of one-hot encoded vectors
-
-$L = -log(\hat{y_c})$
-
-$\hat{y_c}$ is the predicted probability for true class c
-
-example:
-
-y = 1 the true label is given as an integer
-
-and model predicts $\hat{y}$ = [0.2, 0.7, 0.1]
-
-L = -Log($\hat{y_1}$)        here is the real value of y = 0 then we would have took log of $y_0$ 
-
-L = -log(0.7)
-
-L = 0.357
-
-Cross Entropy Loss takes the target labels as One Hot Encoded Vectors, and this may not be feasible if you have many target classes, it is more efficient to represent the target labels as integers rather than one-hot encoded vectors and hence this is where Sparse Cross Entropy should be used. Another caveat — Sparse Cross Entropy should be used when your classes are mutually exclusive, that is, when one sample belongs to only one class, while Cross Entropy should be used when one sample can have multiple classes or labels are soft probabilities like [0.3, 0.7, 0.1].
+- **MSE / L2**
+- **MAE / L1**
+- **RMSE**
+- **Huber loss = MAE + MSE**
+    
+    Robust to outliers
+    
+    $Huber = \frac{1}{n}\sum_{i=1}^n(y_i - \hat{y_i})^2$                                     $y_i - \hat{y_i} \le \delta$
+    
+    $Huber = \frac{1}{n}\sum_{i=1}^{n}\delta (|y_i -\hat{y_i}|-\frac{1}{2}\delta)$                 $y_i - \hat{y_i} > \delta$
+    
+    $\delta$ is the threshold hyperparameter parameter → you can set them manually
+    
+- **Binary Cross-Entropy Loss / Log Loss**
+    
+    only for dual classes
+    
+    $L(y,\hat{y}) = -\frac{1}{N}\sum_{i=1}^{N}[y_i(log(\hat{y_i})+(1-y_i)log(1-\hat{y_i})]$
+    
+- **Categorical Cross-Entropy Loss**
+    
+    Categorical cross entropy is a loss function used in classification problems where each input belongs to one of multiple classes → softmax
+    
+    $L = -\frac{1}{m} \sum_{i=1}^{m}y_ilog(\hat{y_i})$
+    
+    - m is the number of classes
+    - $y_i$ is the true label (one-hot encoded).
+    - $\hat{y_i}$ the predicted probability for example i.
+    
+    example:
+    
+    Suppose y = [0, 1, 0] is the actual value for three classes (A, B, C) and it belongs to class B which is represented in one hot encoded form
+    
+    and model predicts $\hat{y}$ = [0.2, 0.7, 0.1]
+    
+    L = - ( 0.Log(0.2) + 1.log(0.7) + 0.Log(0.1)            → yani ki jiska jitna jyada probability value x utna less log(x) value
+    
+    L = -Log(0.7)
+    
+    L = 0.357
+    
+- **Sparse categorical cross entropy**
+    
+    Sparse categorical cross entropy is similar to categorical cross entropy but is used when the true labels are provided as **integers** instead of one-hot encoded vectors
+    
+    $L = -log(\hat{y_c})$
+    
+    $\hat{y_c}$ is the predicted probability for true class c
+    
+    example:
+    
+    y = 1 the true label is given as an integer
+    
+    and model predicts $\hat{y}$ = [0.2, 0.7, 0.1]
+    
+    L = -Log($\hat{y_1}$)        here is the real value of y = 0 then we would have took log of $y_0$ 
+    
+    L = -log(0.7)
+    
+    L = 0.357
+    
+    Cross Entropy Loss takes the target labels as One Hot Encoded Vectors, and this may not be feasible if you have many target classes, it is more efficient to represent the target labels as integers rather than one-hot encoded vectors and hence this is where Sparse Cross Entropy should be used. Another caveat — Sparse Cross Entropy should be used when your classes are mutually exclusive, that is, when one sample belongs to only one class, while Cross Entropy should be used when one sample can have multiple classes or labels are soft probabilities like [0.3, 0.7, 0.1].
+    
+- **Focal Loss**
+    
+    For large class imbalance
+    
+    Focal Loss focuses on hard-to-classify examples by down-weighting the loss assigned to well classified examples
+    
+    $FL(p_t) = -\alpha_t(1 - p_t)^{\gamma}log(p_t)$
+    
+    $p_t$ is the model’s estimated probability for true classes.
+    
+    $\alpha_t$ is a balancing factor to address class imbalance.
+    
+    $\gamma$ is a focusing parameter that adjusts the rate at which easy examples are down weighted
+    
 
 ---
 
-## Supervised Learning Techniques
+# Supervised Learning Techniques
 
 ---
 
-### ***Linear regression***
+### **Linear regression**
 
 objective → find the hypothesis function → get target value
 
 optimize → hypothesis function based on →  simple weighted sum of input features
 
 loss/Error  → should be used for optimization → MSE, MAE etc
+
+Equation for linear regression → $y = \beta_0 + \beta_1 x + \epsilon$
 
 How to get values of the coefficients (weights)
 
@@ -290,6 +314,8 @@ Non-linear classification
 1. If some dataset is not linearly separable you can always add polynomial features resulting in linearly separable dataset.
 2. Add similar computed features.
 
+---
+
 ### **Logistic regression**
 
 objective → find the hypothesis function  and pass the output of the hypothesis function through a activation function (sigmoid) → get target value
@@ -297,6 +323,8 @@ objective → find the hypothesis function  and pass the output of the hypothesi
 optimize → activation functions output of hypothesis function based on →  simple weighted sum of input features
 
 loss/Error  → should be used for optimization → Log loss, maximum likelihood etc
+
+Equation for Logistic regression → $\hat{y} = \frac{1}{e^{-(\beta_0 + \beta_1 x + \epsilon)}}$
 
 How Sigmoid function squeezes the input values between 0 and 1?
 
@@ -336,13 +364,13 @@ True Positive (TP), True Negative (TN), False Positive (FP) and False Negative (
 
 Accuracy = $\frac{TP + TN}{TP+TN+FP+FN}$ (how often are models prediction and correct)
 
-Precision = $\frac{TP}{TP + FP}$ (how many positive predictions are actually correct)  → model’s ouput positivity
+Precision = $\frac{TP}{TP + FP}$ (how many positive predictions are actually correct)  → model’s output positivity
 
 Recall = $\frac{TP}{TP + FN}$ (how many actual positives were predicted correctly)  → actual data positivity
 
 F1 score = $2 \times \frac{Precision \times Recall}{Precision + Recall}$ (harmonic mean of precision and recall)
 
-AUC-ROC → True positive rate (Recall) vs False positive rate (should be close to 1)
+AUC-ROC → True positive rate (Recall) vs False positive rate for different threshold (default = 0.5)
 
 AUC-PR → Precision (y-axis) vs recall (x-axis) curve (should be close to 1)
 
@@ -524,7 +552,7 @@ Branches represent decision
 
 leaves represent final output or classification outcome
 
-feature scaling is not required mostly
+feature scaling is not required mostly and can lead to decrease in performance
 
 ---
 
@@ -533,7 +561,6 @@ feature scaling is not required mostly
 Bayes' Theorem describes the probability of an event based on prior knowledge of conditions that might be related to the event.
 
 $P(A|B) = \frac{P(B|A).P(A)}{P(B)}$
-
 In a classification context, we aim to find the class C that maximizes P(C∣X), where X is the set of features. 
 
 $P(C|X) = \frac{P(X|C).P(C)}{P(X)}$
@@ -589,23 +616,21 @@ P(not spam) = 0.4
 
 ---
 
-### Ensemble models and random forest
+### Ensemble models
+
+**This is very important**
 
 Wisdom of the crowd
 
 Aggregating the predictions of a group of predictors is called an ensemble model
 
-**Random forest**
-
-ensemble of decision trees only.
-
-Ensemble types are as follows
+Ensemble models
 
 1. **Bagging (Bootstrap aggregating)**
     
     same training model but different random subsets of training data for each predictor
     
-    sampling with replacement → after a datapoint is chosen to be a part of the sample it is replaced back into the dataset to be picked again in subsequent draws.
+    **sampling with replacement** → after a datapoint is chosen to be a part of the sample it is replaced back into the dataset to be picked again in subsequent draws.
     
     **Out-of-bag (OOB) evaluation**
     
@@ -613,11 +638,15 @@ Ensemble types are as follows
     
     This 33% can be used as testing data. With enough estimators the whole training data can be then used as testing data also
     
+    one example is random forest
+    
 2. **Pasting**
     
     same training model but different random subsets of training data for each predictor
     
-    sampling without replacement → after a datapoint is chosen to be a part of the sample it is cannot be replaced back into the dataset to be picked again in subsequent draws.
+    **sampling without replacement** → after a datapoint is chosen to be a part of the sample it is cannot be replaced back into the dataset to be picked again in subsequent draws.
+    
+    example:- same like bagging example random forest but the data is without replacement type
     
 3. **Boosting**
     
@@ -634,26 +663,39 @@ Ensemble types are as follows
     
     1. Adaboost (Adaptive boosting)
         
-        Adjusts the weights of incorrectly classified instances and combines the models with weights based on their accuracy.
+        Adjusts the weights of incorrectly classified instances and train the new models on updated weights.
         
     2. Gradient boosting
         
-        Sequentially adds models to minimize a specified loss function, usually by fitting models to the residual errors of the previous models.
+        Fits new model to the residual errors of previous models.
+        
+        More flexible than adaboost and can handle non-linear relationships, better for higher dimensional data
         
     3. XGBoost (Extreme Gradient Boosting)
         
-        An optimized and efficient implementation of gradient boosting.
+        An optimized and efficient implementation of gradient boosting. Has parallel processing capabilities.
+        
+    4. CatBoost (Categorical Boosting)
+        
+        Optimal for categorical data. No need of one-hot-encoding.
+        
+    5. LightGBM
+        
+        Tree based learning algorithms and one-side sampling technique.
         
 4. **Stacking**
     
-    Stacking involves training multiple different types of models and then using another model to combine their predictions. This technique leverages the strengths of various base models.
+    Stacking involves training multiple different types of models and then using another model to combine their predictions. This technique leverages the strengths of various base models. So the underlying model can be thought of as base models and then we can use a simple Logistic regression model to combine the result of these model to get us an output.
     
     Process:
     
     1. Train several different base models on the training data.
     2. Use the predictions of these base models as input features for a second-level model (meta-model).
     3. Train the meta-model to make the final prediction based on the outputs of the base models.
-5. **Voting classifier**
+    
+    examples are LR, Decision tree and SVM for base models and LR for meta models
+    
+5. **Voting classifiers (Not a ensemble model but rather deciding how the ensemble models O/Ps are found.**
     
     Voting ensembles combine the predictions of multiple models by voting, either through majority voting for classification or averaging for regression.
     
@@ -798,6 +840,32 @@ Process
 3. Recalculate the mean of all the data points for each cluster and assign the new point as the centroid. 
 4. Repeat 2,3 and 4 till the centroids stop moving.
 
+example of finding the mean of the clusters
+
+lets say we have these data points 
+
+`Points: (1, 2), (2, 3), (3, 4), (8, 8), (9, 10), (10, 11)`
+
+and we want to make k = 2 clusters
+
+assume intial centroids are
+
+Centroid 1: (1, 2)
+Centroid 2: (10, 11)
+
+- Points (1, 2), (2, 3), (3, 4) are closer to Centroid 1 → cluster 1
+- Points (8, 8), (9, 10), (10, 11) are closer to Centroid 2 → cluster 2
+
+Recalculate Centroids:
+
+New Centroid 1 = Mean((1, 2), (2, 3), (3, 4))
+= ((1+2+3)/3, (2+3+4)/3)
+= (2, 3)
+
+New Centroid 2 = Mean((8, 8), (9, 10), (10, 11))
+= ((8+9+10)/3, (8+10+11)/3)
+= (9, 9.67)
+
 Clustering types
 
 Hard clustering 
@@ -822,12 +890,12 @@ model’s inertia → sum of the squared distances between the instances and the
 
 ### k-means++
 
-smarter initialization step that tends to select centroids that are distant from one another
+Smarter initialization step that tends to select centroids that are distant from one another
 
 1. Randomly select the first centroid, say $\mu_1$.
 2.  Calculate the distance of all points from  $\mu_1$, then select the second centroid  $\mu_2$ with a probability proportional to sum of the squared distances.
     
-    Let’s say the distance to the few point from the current centroid is as follows
+    Let’s say the distance to the all the points from the current centroid is as follows
     
     - $D(x_1)$ = 1
     - $D(x_2)$ = 2
@@ -883,7 +951,6 @@ Accelerated k-Means algorithms aim to speed up the standard k-means clustering p
     3. **Cluster Assignment**: Assign each point in the mini-batch to the nearest centroid.
     4. **Centroid Update**: Update the centroids based on the mini-batch. The update rule is typically a weighted average to account for the small size of the mini-batch.
     5. **Repeat**: Iterate the mini-batch selection, cluster assignment, and centroid update steps until convergence or a maximum number of iterations is reached.
-    
 
 Finding the optimal number of clusters
 
@@ -1569,21 +1636,172 @@ coupled forget and input gates
 
 GRU
 
-Excellent blog to understand LSTM : [[https://colah.github.io/posts/2015-08-Understanding-LSTMs/](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)]
+Excellent blog to understand LSTM :[[https://colah.github.io/posts/2015-08-Understanding-LSTMs/](https://colah.github.io/posts/2015-08-Understanding-LSTMs/)]
 
 ---
 
 ## Natural Language Processing with RNNs and Attention
 
+### word2vec
+
+CBOW  → given neighbor nodes predict the current word → like fill in the blanks
+
+Skip-gram → given a word predict surrounding words or next words
+
+Training word2vec
+
+![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled%202.png)
+
+1. Input layer: Takes in the one-hot encoded vector of a word [ from the whole vocabulary] - length is same as the number of words in vocab
+2. Hidden layer: The weights of this layer become the word embeddings → 300 neurons 
+3. Output layer: Used to predict the context words or target word depending on the training approach (CBOW or skip-gram)
+
+After training the word2vec model the hidden layer weights become the word embedding 
+
+The rest of the model can be discarded only the middle layer is the most important and a pretrained model can used for getting node embeddings
+
+## GloVe
+
+## FastText
+
 ---
 
-## Autoencoders, GANs, and Diffusion Models
+## Autoencoders
+
+[https://www.jeremyjordan.me/autoencoders/](https://www.jeremyjordan.me/autoencoders/)
+
+## VAE
+
+## GAN
+
+[https://towardsdatascience.com/generative-adversarial-networks-explained-34472718707a](https://towardsdatascience.com/generative-adversarial-networks-explained-34472718707a)
+
+Generative Adversarial Networks have two parts one is generator and other is discriminator.
+
+## Diffusion Models
+
+[https://erdem.pl/2023/11/step-by-step-visual-introduction-to-diffusion-models](https://erdem.pl/2023/11/step-by-step-visual-introduction-to-diffusion-models)
 
 ---
 
 ## Transformers
 
-encoder [lstm] and decoder [lstm]
+[https://towardsdatascience.com/illustrated-guide-to-transformers-step-by-step-explanation-f74876522bc0](https://towardsdatascience.com/illustrated-guide-to-transformers-step-by-step-explanation-f74876522bc0)
+
+![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled%203.png)
+
+1. Left part
+    1. Input embedding
+        
+        First the input is being fed into the input embedding layer (more of a lookup table) where a word is converted into a vector representation.
+        
+    2. Positional Encoding
+        
+        As the transformer as no recurrence like a RNN, we must add some information about the position into the input
+        
+        For every odd index :    $PE_{(pos,2i+1)} = cos(pos/10000^{(2i/d_{model})})$
+        
+        For every even index:  $PE_{(pos,2i)} = sin(pos/10000^{(2i/d_{model})})$
+        
+    3. Encoder layer
+        
+        It consists of a simple multi-headed attention network followed by a feed-forward network
+        
+        The multi-header attention network creates query, key and value vectors from the combination of postional encoding and input embedding.
+        
+        The dot product of query and key gives the scores matrix which determines how much should a word focus on every other word that is fed to it.
+        
+        higher the score more will be the focus.
+        
+        The scores are scaled down by dividing it by square root of the dimension of query and key allowing for stable gradients.
+        
+        Next we softmax the scores to get the resulting attention values.
+        
+        Finally the scores and the value matrix is multiplied to get the resulting output vector.
+        
+        For computing multi-header attention all you need to do is to split the query, key and value vectors into n vectors before applying self attention.
+        
+2. Right part
+    1. output embedding
+        
+        It takes the list of previous outputs as inputs.
+        
+    2. Positional encoding
+        
+        Same as encoder but for output embeddings
+        
+    3. Decoder
+        
+        It consists of two multi-header attention network followed by a feed-forward network and a linear layer. The output embedding of encoder are fed after the first multi-headed attention layer.
+        
+        The first multi-headed attention network is slightly different as we need to ensure that the future words are not feed to it. Each words scores should be computed only for the words coming before it not afterwards. This is done via masking. Basically putting -inf for all score values.
+        
+        The final linear layer acts as a classifier and is as big as the number of classes i.e. number of words(vocab size) you have. It will generate a probability value between 0 and 1.
+        
+
+## BERT
+
+[https://towardsdatascience.com/bert-explained-state-of-the-art-language-model-for-nlp-f8b21a9b6270](https://towardsdatascience.com/bert-explained-state-of-the-art-language-model-for-nlp-f8b21a9b6270)
+
+![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled%204.png)
+
+Bidirectional Encoder Representations from Transformers
+
+Bidirectional: As opposed to directional models, which read the text input sequentially (left-to-right or right-to-left), the Transformer encoder reads the entire sequence of words at once. Therefore it is considered bidirectional.
+
+Since BERT’s goal is to generate a language model, only the encoder mechanism is necessary.
+
+Training 
+
+**Masked LM (MLM)** 
+
+**Before feeding word sequences into BERT**, 15% of the words in each sequence are replaced with a [MASK] token. The model then attempts to predict the original value of the masked words, based on the context provided by the other, non-masked, words in the sequence. The BERT loss function takes into consideration only the prediction of the masked values and ignores the prediction of the non-masked words.
+
+**Next Sentence Prediction (NSP)**
+
+In the BERT training process, the model receives pairs of sentences as input and learns to predict if the second sentence in the pair is the subsequent sentence in the original document. During training, 50% of the inputs are a pair in which the second sentence is the subsequent sentence in the original document, while in the other 50% a random sentence from the corpus is chosen as the second sentence. The assumption is that the random sentence will be disconnected from the first sentence.
+
+BERT fine-tuning
+
+Using BERT for a specific task is relatively straightforward: → done instead of NSP
+
+1. Classification tasks such as sentiment analysis are done similarly to Next Sentence classification, by adding a classification layer on top of the Transformer output for the [CLS] token.
+2. In  Question Answering tasks (e.g. SQuAD v1.1), the software receives a question regarding a text sequence and is required to mark the answer in  the sequence. Using BERT, a Q&A model can be trained by learning two extra vectors that mark the beginning and the end of the answer.
+3. In Named Entity Recognition (NER), the software receives a text sequence and is required to mark the various types of entities (Person, Organization, Date, etc) that appear in the text.
+
+BERT uses encoder-only architecture.
+
+## GPT
+
+![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled%205.png)
+
+Generative Pretrained Transformers
+
+Generative: This feature emphasizes the model's ability to generate text by comprehending and responding to a given text sample. 
+
+Pretrained: refers to the ML model that has undergone training on a large dataset of examples before being deployed for a specific task.
+
+Transformers:  ****A type of neural network architecture that is designed to handle text sequences of varying lengths.
+
+GPT uses decoder-only architecture.
+
+**So whats the difference between BERT and GPT?**
+
+- Architecture:
+    - GPT: Uses only the decoder part of the transformer
+    - BERT: Uses only the encoder part of the transformer
+- Pretraining Task:
+    - GPT: Next token prediction (language modeling)
+    - BERT: Masked language modeling and next sentence prediction
+- Attention Mechanism:
+    - GPT: Unidirectional (can only attend to previous tokens)
+    - BERT: Bidirectional (can attend to both previous and future tokens)
+- Input Processing:
+    - GPT: Processes text left-to-right
+    - BERT: Can access the full context in both directions
+- Primary Use:
+    - GPT: Excels at text completion and conversation.
+    - BERT: Better suited for understanding tasks (question answering and named entity recognition)
 
 ---
 
@@ -1592,8 +1810,6 @@ encoder [lstm] and decoder [lstm]
 ---
 
 ## Graph Neural Networks (GNN)
-
----
 
 ### Application of graph machine learning
 
@@ -2163,7 +2379,7 @@ Once you learn $z_G$ we can use it for graph classification, etc
     
     Where is the surfer at time t+1
     
-    ![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled%202.png)
+    ![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled%206.png)
     
     pick any outlink at uniform and go to it
     
@@ -2267,7 +2483,7 @@ message + aggregation → GNN layer
 
 { GCN, GraphSage, GAT → different gnn architectures}
 
-![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled%203.png)
+![Untitled](Machine%20learning%202025837b28ef4aecbc1b3261dbcfb669/Untitled%207.png)
 
 1. Message Computation
     
@@ -2315,17 +2531,17 @@ These three steps become a single layer of GNN
 
 ### Classical GNN layer types
 
-1. Graph Convolutional Network (GCN)
+1. **Graph Convolutional Network (GCN)**
     
-    $h_v^{(l)} = \sigma(\sum_{u\in N(v)} W^{l}\frac{h_u^{(l-1)}}{|N(v)|})$
+    $x_i^{(k)} = \sum_{j \in N(i) \cup \{i\}} \frac{1}{\sqrt{deg(i)}\sqrt{deg(j)}}(W^T.x_j^{(k-1)}+b)$
     
     1. Message computation
         
-        $m_u^{(l)} = \frac{1}{N(v)} W^{(l)}(h_u^{l-1})$                ← Normalized the degree of the node
+        $m_j^{(k)} = \frac{1}{\sqrt{deg(i)}\sqrt{deg(j)}} W^{T}(x_j^{k-1})$                                                    ← Normalized the degree of the node
         
     2. Aggregation
         
-        $h_v^{(l)} = \sigma(sum^{(l)}(\{ m_u^{(l)}, u \in N(v) \}))$
+        $x_i^{(k)} = \sigma(sum(\{ m_j^{(k)}, j \in N(i) \cup{i} \}))$
         
     
     In matrix form
@@ -2345,7 +2561,15 @@ These three steps become a single layer of GNN
     
     Both formulas are the same only in second formula the degree matrix is normalized on both size of adjacency matrix to ensure numerical stability
     
-2. GraphSage
+2. **SageConv**
+    
+    $x_i' = W_1x_i + W_2.mean_{j \in N(i)}x_j$
+    
+    if project = True
+    
+    then we first compute $x_j \leftarrow \sigma(W_3x_j + b)$
+    
+3. **GraphSage**
     
     $h_v^{(l)} = \sigma(W^{(l)}. CONCAT(h_v^{l-1},AGG(\{ h_u^{(l-1)}, \forall u \in N(v)  \})))$
     
@@ -2385,7 +2609,7 @@ These three steps become a single layer of GNN
     As embedding vectors have different scales
     After applying L2 normalization all vectors will have same scales
     
-3. The Label Propagation Algorithm (LPA)
+4. **The Label Propagation Algorithm (LPA)**
     
     $Y^{(k+1)} = D^{-1}AY^{(k)}$                       
     Here all the nodes propagate label to their neighbors
@@ -2394,15 +2618,15 @@ These three steps become a single layer of GNN
     
     Here all labeled nodes are reset to their initial values as we want to persist the labels of already labelled nodes
     
-4. GCN-LPA
+5. **GCN-LPA**
     
     increasing the strength of edges between the nodes of the same class is equivalent to increasing the accuracy of LPA’s predictions
     
-    We want to find optimal node embeddings W* and edge weights A* by setting 
+    We want to find optimal node embeddings W* and edge weights A* by setting
     
     $W^* A^* = arg min_{W,A} L_{gcn}(W,A) + \lambda L_{gcn} (A)$
     
-5. GAT
+6. **GAT**
     
     $h_v^{(l)} = \sigma(\sum_{u \in N(v) }\alpha_{vu} W^{(l)}h_{(u)}^{(l-1)})$
     
@@ -2456,6 +2680,12 @@ These three steps become a single layer of GNN
     
     AGG could be concatenation or summation
     
+7. **Edge Convolutional Layer**
+    
+    $x_i^{(k)} = \max\limits_{j\in N(i)}h_\theta(x_i^{(k-1)},x_j^{(k-1)} -x_i^{(k-1)})$
+    
+    $h_\theta$ denotes an MLP
+    
 
 General GNN layer 
 
@@ -2468,7 +2698,7 @@ General GNN layer
 
 ### Things to work on graphs
 
-Class imbalance
+Class imbalance → focal loss
 
 Dataloader
 
@@ -2495,7 +2725,7 @@ Why and how to use graph models
 - **Integration**: Node2Vec embeddings can serve as initial node representations fed into GNNs, enhancing the GNN's ability to generalize and capture nuanced graph structures.
 - **Enhancement**: GNNs can further refine node embeddings learned by Node2Vec through iterative message passing and feature aggregation, improving their robustness and discriminative power for specific tasks.
 
-List of Graph modesl
+List of Graph models
 
 1. Embedding based models
     1. DeepWalk
@@ -2522,69 +2752,171 @@ List of Graph modesl
 
 ---
 
-Built using neural network
+Natural Language Processing (NLP)
 
-### Natural Language Processing (NLP)
+1. BERT (Bidirectional Encoder Representations from Transformers): A transformer-based model designed for understanding the context of words bidirectionally.
+2. GPT (Generative Pre-trained Transformer): An autoregressive transformer model known for generating coherent and contextually relevant text.
+3. T5 (Text-To-Text Transfer Transformer): A model that frames all NLP tasks as text-to-text problems.
+4. RoBERTa (Robustly Optimized BERT Pretraining Approach): An optimized version of BERT with more training data and longer training times.
+5. XLNet: An autoregressive model that incorporates permutation-based training to capture bidirectional context.
+6. ERNIE (Enhanced Representation through Knowledge Integration): A model incorporating external knowledge graphs into the pre-training process.
+7. Transformer-XL: A model addressing long-context dependencies by introducing segment-level recurrence mechanisms.
+8. DistilBERT: A smaller, faster, cheaper, and lighter version of BERT.
 
-1. **BERT (Bidirectional Encoder Representations from Transformers)**: A transformer-based model designed for understanding the context of words bidirectionally.
-2. **GPT (Generative Pre-trained Transformer)**: An autoregressive transformer model known for generating coherent and contextually relevant text.
-3. **T5 (Text-To-Text Transfer Transformer)**: A model that frames all NLP tasks as text-to-text problems.
-4. **RoBERTa (Robustly Optimized BERT Pretraining Approach)**: An optimized version of BERT with more training data and longer training times.
-5. **XLNet**: An autoregressive model that incorporates permutation-based training to capture bidirectional context.
-6. **ERNIE (Enhanced Representation through Knowledge Integration)**: A model incorporating external knowledge graphs into the pre-training process.
-7. **Transformer-XL**: A model addressing long-context dependencies by introducing segment-level recurrence mechanisms.
-8. **DistilBERT**: A smaller, faster, cheaper, and lighter version of BERT.
+Computer Vision
 
-### Computer Vision
-
-1. **AlexNet**: An early convolutional neural network (CNN) that won the ImageNet competition in 2012.
-2. **VGGNet**: Known for its simplicity and use of very small (3x3) convolution filters.
-3. **GoogLeNet (Inception)**: Introduced the Inception module, allowing for more efficient computation.
-4. **ResNet (Residual Networks)**: Introduced residual learning to train very deep networks.
-5. **DenseNet**: Features dense connections between layers, encouraging feature reuse.
-6. **MobileNet**: Designed for efficient use on mobile and embedded vision applications.
-7. **EfficientNet**: Balances network depth, width, and resolution to improve performance.
-8. **YOLO (You Only Look Once)**: Real-time object detection system.
-9. **RCNN (Region-based Convolutional Neural Networks)**: Object detection model using region proposals.
-
-### Reinforcement Learning
-
-1. **DQN (Deep Q-Network)**: Combines Q-learning with deep neural networks to play Atari games at superhuman levels.
-2. **A3C (Asynchronous Advantage Actor-Critic)**: Improves the stability and efficiency of training reinforcement learning models.
-3. **AlphaGo**: The first AI to defeat a professional human player in the game of Go.
-4. **AlphaZero**: Generalized version of AlphaGo that mastered Go, Chess, and Shogi from self-play.
-5. **OpenAI Five**: AI system that defeated professional Dota 2 players.
-
-### Speech Recognition and Generation
-
-1. **DeepSpeech**: An end-to-end deep learning-based speech recognition system.
-2. **WaveNet**: A generative model for raw audio waveforms, producing high-fidelity speech synthesis.
-3. **Tacotron**: Text-to-speech model converting text to spectrograms, later used by WaveNet to produce audio.
-
-### Generative Models
-
-1. **GAN (Generative Adversarial Networks)**: A framework where two neural networks (generator and discriminator) are trained simultaneously to generate realistic data.
-2. **DCGAN (Deep Convolutional GAN)**: Applies convolutional networks in GANs, particularly effective for image generation.
-3. **StyleGAN**: Generates high-quality images with adjustable style parameters.
-4. **VAE (Variational Autoencoder)**: A type of autoencoder that generates new data points by learning the probability distribution of input data.
-
-### Sequence Models
-
-1. **LSTM (Long Short-Term Memory)**: A type of recurrent neural network (RNN) designed to handle long-term dependencies.
-2. **GRU (Gated Recurrent Unit)**: A simplified version of LSTM with fewer parameters.
-3. **Seq2Seq**: Encoder-decoder model for tasks like machine translation.
-
-### Multimodal Models
-
-1. **CLIP (Contrastive Language–Image Pretraining)**: A model trained on a variety of images paired with their descriptions, enabling it to understand images and text together.
-2. **DALL-E**: A model capable of generating images from textual descriptions.
+1. AlexNet: An early convolutional neural network (CNN) that won the ImageNet competition in 2012.
+2. VGGNet: Known for its simplicity and use of very small (3x3) convolution filters.
+3. GoogLeNet (Inception): Introduced the Inception module, allowing for more efficient computation.
+4. ResNet (Residual Networks): Introduced residual learning to train very deep networks.
+5. DenseNet: Features dense connections between layers, encouraging feature reuse.
+6. MobileNet: Designed for efficient use on mobile and embedded vision applications.
+7. EfficientNet: Balances network depth, width, and resolution to improve performance.
+8. YOLO (You Only Look Once): Real-time object detection system.
+9. RCNN (Region-based Convolutional Neural Networks): Object detection model using region proposals.
 
 Reinforcement Learning
 
+1. DQN (Deep Q-Network): Combines Q-learning with deep neural networks to play Atari games at superhuman levels.
+2. A3C (Asynchronous Advantage Actor-Critic): Improves the stability and efficiency of training reinforcement learning models.
+3. AlphaGo: The first AI to defeat a professional human player in the game of Go.
+4. AlphaZero: Generalized version of AlphaGo that mastered Go, Chess, and Shogi from self-play.
+5. OpenAI Five: AI system that defeated professional Dota 2 players.
+
+Speech Recognition and Generation
+
+1. DeepSpeech: An end-to-end deep learning-based speech recognition system.
+2. WaveNet: A generative model for raw audio waveforms, producing high-fidelity speech synthesis.
+3. Tacotron: Text-to-speech model converting text to spectrograms, later used by WaveNet to produce audio.
+
+Generative Models
+
+1. GAN (Generative Adversarial Networks): A framework where two neural networks (generator and discriminator) are trained simultaneously to generate realistic data.
+2. DCGAN (Deep Convolutional GAN): Applies convolutional networks in GANs, particularly effective for image generation.
+3. StyleGAN: Generates high-quality images with adjustable style parameters.
+4. VAE (Variational Autoencoder): A type of autoencoder that generates new data points by learning the probability distribution of input data.
+
+Sequence Models
+
+1. LSTM (Long Short-Term Memory): A type of recurrent neural network (RNN) designed to handle long-term dependencies.
+2. GRU (Gated Recurrent Unit): A simplified version of LSTM with fewer parameters.
+3. Seq2Seq: Encoder-decoder model for tasks like machine translation.
+
+Multimodal Models
+
+1. CLIP (Contrastive Language–Image Pretraining): A model trained on a variety of images paired with their descriptions, enabling it to understand images and text together.
+2. DALL-E: A model capable of generating images from textual descriptions.
+
 ---
 
-[Numpy](https://www.notion.so/Numpy-b6a09816adcb4f82be40ca89816c09db?pvs=21)
+# Hyperparameter Tuning
 
-At each time step t (also called a frame), this recurrent
-neuron receives the inputs x as well as its own output from the previous
-time step, ŷ .
+Parameters are like the weights of the model like W and b they are learned during training.
+
+However hyperparameters are set prior to training process and govern the training process itself eg., learning rate, number of trees in a random forest.
+
+Common hyperparameters
+
+1. learning rate
+2. Batch size
+3. Number of epochs
+4. Number of layers and neurons in neural netowork
+5. Regularization parameters(L1/L2).
+6. Number of trees in random forests.
+
+### Grid Search
+
+Grid search involves specifying a set of values for each hyperparameter, and then exhaustively trying all possible combinations of these values to find the best-performing set.
+
+Example:
+For a Support Vector Machine (SVM) with hyperparameters `C` (regularization parameter) and `gamma` (kernel coefficient), a grid search might look like this:
+
+```markdown
+from sklearn.model_selection import GridSearchCV
+from sklearn.svm import SVC
+
+param_grid = {
+    'C': [0.1, 1, 10, 100],
+    'gamma': [1, 0.1, 0.01, 0.001],
+    'kernel': ['rbf']
+}
+
+grid = GridSearchCV(SVC(), param_grid, refit=True, verbose=2)
+grid.fit(X_train, y_train)
+
+print(grid.best_params_)
+print(grid.best_estimator_)
+```
+
+### Random Search
+
+Random search involves sampling a fixed number of hyperparameter combinations from a specified distribution. This can be more efficient than grid search, especially when dealing with a large number of hyperparameters or a large range of possible values.
+
+```markdown
+from sklearn.model_selection import RandomizedSearchCV
+from sklearn.ensemble import RandomForestClassifier
+
+param_dist = {
+    'n_estimators': [10, 50, 100, 200],
+    'max_features': ['auto', 'sqrt', 'log2'],
+    'max_depth': [None, 10, 20, 30, 40, 50],
+    'min_samples_split': [2, 5, 10],
+    'min_samples_leaf': [1, 2, 4],
+    'bootstrap': [True, False]
+}
+
+random_search = RandomizedSearchCV(estimator=RandomForestClassifier(), param_distributions=param_dist, n_iter=100, cv=3, verbose=2, random_state=42, n_jobs=-1)
+random_search.fit(X_train, y_train)
+
+print(random_search.best_params_)
+print(random_search.best_estimator_)
+
+```
+
+### Bayesian Optimization
+
+Bayesian optimization builds a probabilistic model of the objective function and uses it to select the most promising hyperparameters to evaluate in the true objective function. It balances exploration and exploitation to efficiently find the optimum hyperparameters.
+
+**Example**:
+Using the `bayes_opt` library for Bayesian Optimization:
+
+```markdown
+from bayes_opt import BayesianOptimization
+from sklearn.model_selection import cross_val_score
+from sklearn.ensemble import RandomForestClassifier
+
+def rf_cv(n_estimators, min_samples_split, max_features):
+    val = cross_val_score(
+        RandomForestClassifier(n_estimators=int(n_estimators), min_samples_split=int(min_samples_split), max_features=min(max_features, 0.999)),
+        X_train, y_train, scoring='accuracy'
+    ).mean()
+    return val
+
+pbounds = {
+    'n_estimators': (10, 200),
+    'min_samples_split': (2, 10),
+    'max_features': (0.1, 0.999)
+}
+
+optimizer = BayesianOptimization(
+    f=rf_cv,
+    pbounds=pbounds,
+    random_state=42,
+)
+
+optimizer.maximize(init_points=10, n_iter=30)
+
+print(optimizer.max)
+
+```
+
+### Gradient-Based Optimization
+
+Some advanced techniques use gradient information to adjust hyperparameters. This is common in deep learning frameworks where techniques like learning rate schedules, adaptive learning rates (Adam, RMSprop), and learning rate warm-ups are applied.
+
+Best practice
+
+1. Start Simple: Begin with a simple model and a limited hyperparameter space. Gradually expand as needed.
+2. Cross-Validation: Use cross-validation to ensure that the hyperparameter tuning process is robust and the results are not due to overfitting.
+3. Early Stopping: Implement early stopping to avoid overfitting in deep learning models.
+4. Learning Curves: Plot learning curves to diagnose the learning process and adjust hyperparameters accordingly.

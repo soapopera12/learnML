@@ -18,6 +18,10 @@ nvidia-smi
 # alternatively in linux
 cat /usr/lib/cuda/version.txt
 
+# if no permission or Access denied
+add --user at the end of the command
+pip install numpy --user
+
 # install required libraries in windows for CUDA 11.8
 pip install numpy
 pip install pandas

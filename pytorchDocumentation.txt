@@ -80,7 +80,6 @@ torch_geometric.transforms
     Graph Transforms
     Vision Transforms
 
-
 torch_geometric.data 
     // It is a module in the PyTorch Geometric library that provides classes and 
     utilities for handling and processing graph-structured data.
@@ -88,11 +87,10 @@ torch_geometric.data
         Data(x, edge_index, edge_attribute, y)
         HeteroData()
         Batch()
-    Remote Backend Interfaces
-    Databases
-    PyTorch Lightning Wrappers
-    Helper Functions
 
+torch_geometric.utils
+    add_self_loops()
+    degree()
 
 ---------------------------------------------------------------------------------------------------------
 
