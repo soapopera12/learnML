@@ -1,12 +1,8 @@
 # Machine learning
 
-**Notations** 
+A Quick Guide to Understanding the Basics of Machine Learning
 
-Important - purple
-
-questions - red
-
-Links - green
+This guide was created using blogs, my own understanding, and of course, ChatGPT. If you find any mistakes, please feel free to reach out.
 
 What is a derivative?
 
@@ -38,6 +34,8 @@ What are the rules of differentiation?
     
     $\frac{d}{dx}(g \circ f)(x) = \frac{d}{dx}(g(f(x)) = \frac{dg}{dx} \frac{df}{dx}$
     
+
+That’s it, this math is fuckin enough to get you started for now you can skip linear algebra for now
 
 **Linear Algebra**
 
@@ -75,7 +73,7 @@ Null space
 
 eigenvector and eigenvalue
 
-For a transformation or a Matrix M there can be vector/vectors which only scale but do not change their direction (do not transform) these vectors are eigenvectors.
+For a transformation or a Matrix M there can be vector/vectors which only scale but do not change their direction (do not transform) these vectors are eigenvectors and the value by which they get scaled is called eigenvalue.
 
 **Loss Types**
 
@@ -707,6 +705,28 @@ Ensemble models
         
         Each model provides a probability for each class, and the class with the highest average probability is the final prediction.
         
+
+### Knn Algorithm
+
+- **Choosing K:**
+    - Select the number of neighbors (K). This is a crucial hyperparameter that determines the number of nearest neighbors to consider when making a prediction.
+- **Calculating Distance:**
+    - For a given input, calculate the distance between this input and all the points in the training dataset. Common distance metrics include Euclidean distance, Manhattan distance, and Minkowski distance.
+- **Identifying Neighbors:**
+    - Identify the K closest neighbors to the input based on the calculated distances.
+- **Making Predictions:**
+    - **For Classification:**
+        - The input is assigned to the class most common among its K nearest neighbors (majority voting).
+    - **For Regression:**
+        - The input's predicted value is the average (or sometimes weighted average) of the values of its K nearest neighbors.
+
+Main disadvantages
+
+considered lazy because → does not scale well mainly because it memorizes the entire dataset and performs actions based on the dataset
+
+ curse of dimensionality
+
+prone to overfitting 
 
 ---
 
