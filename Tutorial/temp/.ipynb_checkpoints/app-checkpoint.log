@@ -1,0 +1,11 @@
+2024-07-23 16:27:01,385 - __main__ - DEBUG - Starting the script
+2024-07-23 16:27:01,385 - __main__ - INFO - Division succeeded: 10 / 2 = 5.0
+2024-07-23 16:27:01,385 - __main__ - DEBUG - Result: 5.0
+2024-07-23 16:27:01,385 - __main__ - ERROR - Division by zero error
+Traceback (most recent call last):
+  File "C:\Users\DELL\AppData\Local\Temp\ipykernel_29596\3381319500.py", line 16, in divide
+    result = a / b
+             ~~^~~
+ZeroDivisionError: division by zero
+2024-07-23 16:27:01,385 - __main__ - DEBUG - Result: None
+2024-07-23 16:27:01,385 - __main__ - DEBUG - Script finished
