@@ -4,6 +4,11 @@
 
 ### Tokenization (word, subword, sentence)
 
+Types of tokenizers
+1. Word tokenizers
+2. Subword tokenizers
+3. Sentence tokenizers
+
 **Word Tokenization**
 
 **Definition**
@@ -48,7 +53,6 @@ This is widely used today. Subword tokenization splits words into smaller meanin
     **Definition:** 
 
     Builds subwords by merging the most frequently occurring character/token pairs in the data.
-
     **Tokenizers:**
 
     1. Byte Pair Encoding (BPE)

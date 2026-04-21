@@ -61,6 +61,7 @@ $$
 ### Median
 
 The middle value of a dataset when it is ordered from least to greatest. If $n$ is even, it is the average of the two middle values.
+
 $$ 
 \text{Median} = \begin{cases} x_{(n+1)/2} & \text{if } n \text{ is odd} \\ \frac{x_{n/2} + x_{n/2 + 1}}{2} & \text{if } n \text{ is even} \end{cases} 
 $$
@@ -178,12 +179,13 @@ $$
 
 Suppose we want to determine whether a die is fair or loaded.
 
-1. $\theta_1$: Die is **fair}
-2. $\theta_2$: Die is **loaded} (biased towards 6)
+1. $\theta_1$: Die is **fair**
+2. $\theta_2$: Die is **loaded** (biased towards 6)
 
 **Step 1: Prior**
 
 Before observing any data, assume:
+
 $$
 P(\text{fair}) = 0.5, \quad P(\text{loaded}) = 0.5
 $$
@@ -191,6 +193,7 @@ $$
 **Step 2: Data**
 
 We roll the die once and observe:
+
 $$
 D = \text{``6''}
 $$
@@ -199,10 +202,13 @@ $$
 
 
 1. If the die is fair:
+
 $$
 P(6 \mid \text{fair}) = \frac{1}{6}
 $$
+
 2. If the die is loaded (favoring 6):
+
 $$
 P(6 \mid \text{loaded}) = \frac{1}{2}
 $$
@@ -214,6 +220,7 @@ Compute numerator terms:
 $$
 P(6 \mid \text{fair}) \cdot P(\text{fair}) = \frac{1}{6} \times 0.5 = 0.0833
 $$
+
 $$
 P(6 \mid \text{loaded}) \cdot P(\text{loaded}) = \frac{1}{2} \times 0.5 = 0.25
 $$
@@ -224,9 +231,11 @@ P(6) = 0.0833 + 0.25 = 0.3333
 $$
 
 Final posterior probabilities:
+
 $$
 P(\text{fair} \mid 6) = \frac{0.0833}{0.3333} \approx 0.25
 $$
+
 $$
 P(\text{loaded} \mid 6) = \frac{0.25}{0.3333} \approx 0.75
 $$
@@ -237,7 +246,6 @@ After observing a single roll of 6:
 
 1. Probability die is fair $\approx 25\%$
 2. Probability die is loaded $\approx 75\%$
-
 
 The belief shifts toward the die being loaded because rolling a 6 is more likely under that assumption.
 
@@ -349,10 +357,13 @@ Key Properties
 1. Defined only for discrete values.
 2. Gives probability at an exact point.
 3. All probabilities lie between 0 and 1:
+
 $$
 0 \leq P(X = k) \leq 1
 $$
+
 4. Total probability sums to 1:
+
 $$
 \sum_{k} P(X = k) = 1
 $$
@@ -399,6 +410,7 @@ Key Properties
 2. $f(x)$ is not a probability, but a density.
 3. Probability is obtained by integrating over a range.
 4. Total area under the curve is 1:
+
 $$
 \int_{-\infty}^{\infty} f(x)\,dx = 1
 $$
@@ -431,9 +443,11 @@ Key Properties
 1. Symmetry: The curve is perfectly symmetric around the center.
 2. Mean = Median = Mode: All measures of central tendency are the same.
 3. Controlled by Two Parameters: 
+
 $$
 \mu \rightarrow \text{mean} \rightarrow \text{center of the distribution}
 $$
+
 $$
 \delta \rightarrow \text{standard deviation} \rightarrow \text{spread of the data}
 $$
@@ -443,7 +457,9 @@ $$
 
 The probability density function (PDF):
 
-$$f(x) = \frac{1}{\sigma \sqrt{2\pi}}e^{-\frac{(x - \mu)^2}{2\sigma^2}}$$
+$$
+f(x) = \frac{1}{\sigma \sqrt{2\pi}}e^{-\frac{(x - \mu)^2}{2\sigma^2}}
+$$
 
 This tells you how likely a value is.
 
@@ -452,7 +468,11 @@ This tells you how likely a value is.
 If we convert any normal distribution into:
 
 we get the standard normal distribution:
-$$\text{Mean} = 0$$
+
+$$
+\text{Mean} = 0
+$$
+
 $$\text{Standard Deviation} = 1$$
 
 This is useful as many machine learning models normality and so it helps in outlier detection and is used in hypothesis testing.
@@ -482,17 +502,32 @@ Key Properties
 
 The probability mass function (PMF):
 
-$$P(X = k) = \binom{n}{k} p^k (1 - p)^{n-k}$$
+$$
+P(X = k) = \binom{n}{k} p^k (1 - p)^{n-k}
+$$
 
 where:
-$$n \rightarrow \text{number of trials}$$
-$$k \rightarrow \text{number of successes}$$
-$$p \rightarrow \text{probability of success}$$
+
+$$
+n \rightarrow \text{number of trials}
+$$
+
+$$
+k \rightarrow \text{number of successes}
+$$
+
+$$p \rightarrow \text{probability of success}
+$$
 
 **Mean and Variance**
 
-$$\text{Mean} = np$$
-$$\text{Variance} = np(1 - p)$$
+$$
+\text{Mean} = np
+$$
+
+$$
+\text{Variance} = np(1 - p)
+$$
 
 This distribution is discrete and is commonly used in scenarios involving repeated independent experiments.
 

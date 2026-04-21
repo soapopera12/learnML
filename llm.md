@@ -92,7 +92,7 @@ Note: In reality, embedding dimensions (vector size) are much larger—usually 7
 
     3. **Step 3**: The Model Learns Embeddings During Training
 
-        Initially these embeddings are randomly initialized. During training, embeddings are adjusted based on the model’s task (e.g., predicting the next word in GPT). Similar words (e.g., "dog" and "cat") get similar embeddings.
+        Initially these embeddings are randomly initialized. During training, embeddings are adjusted based on the model’s task (e.g., predicting the next word in GPT) based on their loss. Similar words (e.g., "dog" and "cat") get similar embeddings.
 
         Embeddings are adjusted using backpropagation and gradient descent during training.
         
@@ -117,7 +117,7 @@ Note: In reality, embedding dimensions (vector size) are much larger—usually 7
 
             Example: The model predicts "playing" when the correct next word is "sleeping". The loss function (e.g., Cross-Entropy Loss) computes the error.
 
-        5. **Step 5**: Backpropagation Updates Embeddings:
+        5. **Step 5**: Backpropagation Updates model weighs and **also the Embeddings**:
 
             The error is propagated back through the model. The embedding matrix is updated using gradient descent. Similar words get pulled closer together in vector space.
 
@@ -322,16 +322,16 @@ Here is how it works
 
 1. Block-Based Quantization: The model's weights (which start as 32-bit or 16-bit floating-point numbers) are not quantized one by one. Instead, they are grouped into small "blocks" (e.g., a block of 32 or 256 numbers).
 2. Find a Scaling Factor (Delta): For each block, the algorithm finds the number with the largest absolute value. This value is used to calculate a single, high-precision floating-point number called the scale or delta. This scale essentially defines the range or volume of all the numbers in that block.
+
 $$
 scale = \frac{max - min}{2^k - 1}
 $$ 
+
 3. Map to Integers: Every floating-point number in the block is then divided by this scale and rounded to the nearest integer that fits within the target bit-depth (e.g., for 4-bit, the integers can range from -8 to +7).
+
 $$
 w_{int}=round(\frac{w-min}{scale})
 $$
-
-1. A single, high-precision scale (a float).
-2. A whole block of tiny integers (e.g., 32 numbers, each being 4-bit).
 
 When the model runs, llama.cpp performs matrix multiplications by first unscaling the integers on-the-fly (integer * scale) or, more cleverly, by using highly optimized integer math that incorporates the scale factor directly.
 
@@ -469,9 +469,36 @@ Introduce small feed-forward modules (adapters) in the Transformer layers. Only 
 
 ---
 
-## LLM fine-tuning for alignment
+## Speculative decoding
+
+Speculative decoding is a technique to **speed up LLM text generation** by using a **small draft model** to propose multiple tokens and a **large target model** to verify them in parallel.
+
+**How it works**
+
+1. **Drafting**
+   A small, fast model generates `k` tokens ahead. A smaller model can do k forward passes faster.
+
+2. **Verification**
+   The large model checks all `k` tokens in **one forward pass**.
+
+3. **Accept / Reject**
+
+   * Accept tokens that match the large model’s distribution
+   * On mismatch, reject from that point and let the large model generate the correct token
+
+**Why it is faster**
+
+* Normal decoding:
+  `k tokens → k large-model forward passes`
+
+* Speculative decoding:
+  `k tokens → 1 large-model forward pass`
+
+Checking multiple tokens is **parallel**, while generating is **sequential**
 
 ---
+
+## LLM fine-tuning for alignment
 
 ###  SFT (Supervised Fine-Tuning)
 

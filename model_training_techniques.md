@@ -806,6 +806,92 @@ If using ReLU or Leaky ReLU $\rightarrow$ Use He (Kaiming)
 
 ---
 
+## Continuous Batching
+
+**core idea**
+Continuous batching is a scheduling technique used during inference where **new requests are continuously added to an already running batch**, instead of waiting for the entire batch to finish.
+It keeps the GPU busy by dynamically mixing tokens from different sequences, improving throughput and reducing idle time.
+
+**standard (static) batching**
+
+In normal batching:
+
+* A batch of requests is formed
+* All sequences are processed step-by-step together
+* New requests must wait until the batch finishes
+
+Problem:
+
+* If some sequences finish early → GPU becomes underutilized
+* New requests experience latency
+
+---
+
+**continuous batching computation**
+
+At each decoding step ( t ):
+
+$$
+\text{Batch}_t = {\text{active sequences at step } t}
+$$
+
+Instead of fixed batch size:
+
+$$
+|\text{Batch}_t| \text{ changes dynamically}
+$$
+
+When a sequence finishes:
+
+* It is removed
+
+When a new request arrives:
+
+* It is inserted into the next step
+
+---
+
+**how it works internally**
+
+At each step:
+
+1. Take all active sequences
+2. Run one forward pass (next-token prediction)
+3. Remove completed sequences
+4. Add new incoming sequences
+5. Repeat
+
+So the batch is **continuously evolving**
+
+---
+
+**why it works for efficiency**
+
+* Keeps GPU utilization high (no idle slots)
+* Avoids waiting for slow/long sequences
+* Reduces average latency for new requests
+* Maximizes throughput under real-world traffic
+
+---
+
+**challenge it introduces**
+
+* Each sequence has different lengths
+* KV cache must be managed per sequence
+* Attention states must not mix across users
+
+---
+
+**where it is used**
+
+1. vLLM
+   Uses continuous batching with efficient KV cache management
+
+2. TensorRT-LLM
+   Implements dynamic batching for high-throughput serving
+
+---
+
 ## Knowledge distillation
 
 ## Distributed Neural Network Training
