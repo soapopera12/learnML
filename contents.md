@@ -288,6 +288,7 @@
       12.4. [TensorRT-LLM](llm#tensorrt-llm)<br>
    13. [LLM inference and benchmarks](llm#llm-inference-and-benchmarks)<br>
       13.1. [Configuration parameters for LLM inference](llm#configuration-parameters-for-llm-inference)<br>
-   14. [Model Context Protocol (MCP) for LLMs](llm#model-context-protocol-mcp-for-llms)<br>
-   15. [Powering LLMs with AI Agentic workflows](llm#powering-llms-with-ai-agentic-workflows)<br>
-   16. [Building LLM powered applications](llm#building-llm-powered-applications)<br>
+   14. [Caculating metrics for running LLMs localy](llm#caculating-metrics-for-running-llms-localy)<br>
+   15. [Model Context Protocol (MCP) for LLMs](llm#model-context-protocol-mcp-for-llms)<br>
+   16. [Powering LLMs with AI Agentic workflows](llm#powering-llms-with-ai-agentic-workflows)<br>
+   17. [Building LLM powered applications](llm#building-llm-powered-applications)<br>

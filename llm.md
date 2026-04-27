@@ -616,8 +616,6 @@ Same but is Nvidia-only and supports CUDA
 
 ## LLM inference and benchmarks
 
----
-
 ###  Configuration parameters for LLM inference
 
 
@@ -646,6 +644,90 @@ Same but is Nvidia-only and supports CUDA
     3. Temperature > 1 (e.g., 2.0): The distribution becomes flatter, giving low-probability tokens more chance. Output is more random / creative / surprising.
 
 ---
+
+## Caculating metrics for running LLMs localy
+
+**Memory Weights ($M_{weights}$)**
+
+This formula calculates the storage or VRAM required to load the model parameters based on the quantization level.
+
+$$
+M_{weights} \approx \frac{n \times Q}{8} \times 1.2
+$$
+
+* **$n$:** Number of parameters (in billions).
+* **$Q$:** Precision bits (e.g., 4-bit, 8-bit, 16-bit).
+* **$8$:** Constant to convert bits to bytes.
+* **$1.2$:** Buffer for activations and temporary buffers (roughly 20%).
+
+**KV Cache Memory ($M_{kv}$)**
+
+This formula estimates the memory required to store the context (Key-Value pairs) during inference, which scales with the context length.
+
+$$
+M_{kv} \approx \frac{2 \times \text{No. of layers} \times \text{No. of heads (KV)} \times \text{dim of head} \times \text{precision} \times \text{ctx\_len}}{8}
+$$
+
+* **$2$:** Represents the two components: Keys and Values.
+* **$\text{precision}$:** The bit-width of the KV cache (e.g., 16 bits or 4 bits).
+* **$\text{ctx\_len}$:** Total context window size.
+
+**Total Memory Requirement**
+
+The total memory footprint is the sum of the weights and the active context.
+$$\text{Total} = M_{weights} + M_{kv}$$
+
+**Tokens Per Second (TPS)**
+
+This calculates the generation speed based on the hardware bottleneck.
+$$\text{Tokens per sec} = \frac{\text{Bottleneck Bandwidth}}{M_{weights}}$$
+
+**Bottleneck Scenarios and Bandwidths**
+
+The performance of the system is dictated by the slowest link in the data path.
+
+1.  **If $M_{weights} < \text{GPU VRAM}$:**
+    The bottleneck is the **GPU to VRAM bandwidth** (GDDR).
+    * **GDDR6:** ~200-500 GB/sec (Calculated as $\text{pin speed} \times \text{bus width}$).
+    * **GDDR7:** ~800 GB/sec (Peak speeds up to 1.5 TB/s in future hardware).
+
+2.  **If $M_{weights}$ fits in GPU VRAM + System RAM:**
+    The bottleneck is the **PCIe Bus (RAM to GPU)**.
+    * **PCIe 4.0 [x16]:** ~32 GB/sec.
+    * **PCIe 5.0 [x16]:** ~64 GB/sec.
+    * **PCIe 6.0 [x16]:** ~128 GB/sec.
+
+3.  **If $M_{weights}$ exceeds System RAM (Swapping to SSD):**
+    The bottleneck is the **SSD to RAM** speed via the PCIe interface (usually x4 lanes).
+    * **PCIe 4.0 (x4):** ~8 GB/sec.
+    * **PCIe 5.0 (x4):** ~16 GB/sec.
+
+4.  **If using GGUF Model (CPU + RAM only):**
+    The bottleneck is strictly the **System RAM to CPU bandwidth** also called **memory bus bandwidth**.
+    * **DDR5:** ~100 GB/sec.
+
+**Context Length ($ctx\_len$) Guidelines**
+
+Recommendations for setting the context window based on utility and memory availability.
+* **Minimum:** 2,048 tokens.
+* **Decent:** 8,192 tokens.
+* **Maximum:** Determined by $\frac{\text{Remaining VRAM}}{M_{kv} \text{ per token}}$.
+
+**Multi-User Throughput**
+
+When multiple users access the model, the generation speed is divided among them.
+$$\text{Multiuser Throughput} = \frac{TPS_{total}}{\text{No. of users}}$$
+
+**Multi-User Memory Scaling**
+
+Additional memory is required for each concurrent user to maintain their specific context and activations.
+$$\text{Memory} = M_{weights} + [M_{kv} \times \text{No. of users}] + \text{activations}$$
+
+**GPU Hardware Components**
+
+* **CUDA Cores:** Handle activations, additions, and general floating-point multiplications.
+* **Tensor Cores:** Specialized for heavy matrix multiplications (essential for LLMs).
+* **RT Cores:** Used for ray tracing and rendering (not utilized for ML/LLM tasks).
 
 ## Model Context Protocol (MCP) for LLMs
 
