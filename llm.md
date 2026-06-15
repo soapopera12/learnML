@@ -194,6 +194,347 @@ MoE is a sparse architecture where the model is divided into multiple "experts" 
 
 RAG is a way to augment your LLM at inference time
 
+**Chunking**
+
+1. **Fixed Size Chunking** 
+   Split text into equal-sized chunks (e.g., 500 tokens each) regardless of sentence or paragraph boundaries.
+
+2. **Sliding Window Chunking**  
+   Create overlapping chunks so neighboring chunks share context (e.g., chunk size 500 with overlap 100).
+
+3. **Sentence / Paragraph Chunking**
+   Split document using natural sentence or paragraph boundaries.
+
+4. **Semantic Chunking**
+   Split text when semantic meaning changes by embedding sentences, computing cosine similarity, and detecting topic shifts.
+
+5. **Recursive Chunking**  
+   Try larger structures first (paragraphs → sentences → words) until chunk size fits the limit.
+
+6. **Document-Aware Chunking**
+   Use document structure such as HTML tags, Markdown headings, sections, tables, or code blocks for chunk boundaries.
+
+7. **Agentic Chunking**  
+   An LLM dynamically decides chunk boundaries based on meaning, relevance, or task objective.
+
+8. **Parent-Child Chunking** 
+   Store large parent chunks for context and smaller child chunks for fine-grained retrieval.
+
+9. **Graph-Based Chunking** 
+   Represent document as connected nodes (sentences/paragraphs/entities) and create chunks using graph relationships.
+
+**Retrieval and Reranking**
+
+1. **Dense Embedding Retrieval**
+
+    Text chunks are converted into dense vector embeddings using embedding models such as BERT, OpenAI (text-3-large) embeddings, or Sentence Transformers.
+
+    Example:
+
+    - Chunk: `"Machine learning models improve prediction accuracy"`
+    - Embedding:
+    $$
+    [0.12, -0.44, 0.91, ...]
+    $$
+
+    Steps:
+
+    1. Split document into chunks.
+    2. Convert each chunk into embeddings.
+    3. Store embeddings in a vector database.
+    4. Convert query into embedding.
+    5. Retrieve nearest vectors using similarity search.
+
+    Common vector indexes:
+
+    - HNSW (Hierarchical Navigable Small World)
+    - IVF (Inverted File Index)
+    - FAISS
+    - ScaNN
+
+    These avoid brute-force comparison with all vectors.
+
+    Cosine similarity between query vector q and chunk vector d:
+
+    $$
+    \text{cosine}(q,d)=
+    \frac{q \cdot d}
+    {\|q\|\|d\|}
+    $$
+
+    Range:
+
+    $$
+    [-1,1]
+    $$
+
+    Higher value means more semantic similarity.
+
+    Example:
+
+    Query:
+
+    `"How do neural networks learn?"`
+
+    Retrieved chunk:
+
+    `"Neural networks learn by adjusting weights during training"`
+
+    because embeddings are close in vector space.
+
+
+
+2. **BM25 Retrieval and Reranking**
+
+    BM25 is a sparse lexical retrieval algorithm based on keyword matching.  
+    It does not use embeddings or vector databases.
+
+    Instead, it builds an inverted index.
+
+    Example document chunks:
+
+    ```text
+    Chunk 1: deep learning tutorial
+    Chunk 2: neural network optimization
+    Chunk 3: learning rate scheduling
+    ````
+
+    Inverted index:
+
+    ```text
+    learning -> [Chunk1, Chunk3]
+    neural -> [Chunk2]
+    optimization -> [Chunk2]
+    ```
+
+    Retrieval steps:
+
+    1. Tokenize all chunks.
+    2. Build inverted index table.
+    3. Tokenize query.
+    4. Lookup chunks containing query terms.
+    5. Score chunks using BM25 formula.
+    6. Return highest scoring chunks.
+
+    BM25 formula:
+
+    $$
+    \text{score}(q,d)=
+    \sum_{t \in q}
+    IDF(t)
+    \cdot
+    TF(t)
+    $$
+
+    TF formula:
+
+    $$
+    TF(t) =
+    \frac{
+    f(t,d)(k_1+1)
+    }{
+    f(t,d)+k_1\left(1-b+b\frac{|d|}{avgdl}\right)
+    }
+    $$
+
+    Terms:
+
+    * $f(t,d)$: term frequency in document
+    * $|d|$: document length
+    * $avgdl$: average document length
+    * $IDF(t)$: inverse document frequency
+    * $k_1$: term frequency scaling
+    * $b$: document length normalization
+
+    IDF formula:
+
+    $$
+    IDF(t)=
+    \log
+    \left(
+    \frac{N-n(t)+0.5}
+    {n(t)+0.5}
+    +1
+    \right)
+    $$
+
+    Where:
+
+    * $N$: total number of documents
+    * $n(t)$: number of documents containing term (t)
+
+    Default values:
+
+    $$
+    k_1 \approx 1.2 \text{ to } 2.0
+    $$
+
+    $$
+    b \approx 0.75
+    $$
+
+    Notes:
+
+    * Excellent for exact keyword matching
+    * CPU efficient
+    * No embedding model required
+    * No vector DB required
+
+3. **Retrieval + Cross Encoder Reranking**
+
+   Initial retrieval can be done using:
+
+   * BM25
+   * Dense retrieval
+
+   Top-k retrieved chunks are reranked using a cross encoder.
+
+   Query and chunk are passed together into the transformer:
+
+   ```text
+   [CLS] Query [SEP] Chunk [SEP]
+   ```
+
+   The model predicts a direct relevance score.
+
+   Example:
+
+   Query:
+
+   `"How does reinforcement learning work?"`
+
+   Candidate chunks:
+
+   * Chunk A → score 0.91
+   * Chunk B → score 0.37
+
+   Chunk A is ranked higher.
+
+   Notes:
+
+   * More accurate than pure retrieval
+   * Slower because query-document pairs are processed together
+   * Usually reranks only top-k retrieved chunks
+
+   Final reranked chunks are passed to the LLM.
+
+4. **Late Interaction Retrieval and Reranking**
+
+   Used in models such as ColBERT.
+
+   Instead of embedding an entire chunk into one vector, each token gets its own embedding.
+
+   Example:
+
+   ```text
+   neural network training
+   ```
+
+   Token embeddings:
+
+   ```text
+   neural -> v1
+   network -> v2
+   training -> v3
+   ```
+
+   Query tokens also get tokenwise embeddings.
+
+   MaxSim scoring:
+
+   1. Compute similarity between each query token and all document tokens.
+   2. Take maximum similarity.
+   3. Sum across query tokens.
+
+   Formula:
+
+   $$
+   Score(q,d)=
+   \sum_{i \in q}
+   \max_{j \in d}
+   (q_i \cdot d_j)
+   $$
+
+   Notes:
+
+   * Preserves token-level interactions
+   * Better accuracy than single-vector dense retrieval
+   * Faster than full cross encoder reranking
+   * Requires storing token embeddings
+
+5. **Graph-Based Retrieval and Reranking**
+
+   Documents are represented as graphs where:
+
+   * Nodes = chunks/entities/sentences
+   * Edges = relationships or references
+
+   Retrieval traverses connected nodes using graph search or Graph Neural Networks (GNNs).
+
+   Useful for:
+
+   * Knowledge graphs
+   * Multi-hop reasoning
+   * Connected documents
+
+6. **Metadata / Filter Retrieval and Reranking**
+
+   Chunks are filtered using metadata before retrieval.
+
+   Example metadata:
+
+   ```text
+   topic = AI
+   year = 2025
+   author = research_team
+   ```
+
+   Example:
+
+   Query:
+
+   `"AI papers from 2025"`
+
+   System first filters:
+
+   ```text
+   year = 2025
+   ```
+
+   then performs retrieval.
+
+   Notes:
+
+   * Reduces search space
+   * Improves retrieval precision
+   * Common in production RAG systems
+
+7. **LLM Reranking**
+
+   An LLM evaluates retrieved chunks and determines relevance using reasoning.
+
+   Example prompt:
+
+   ```text
+   Query:
+   "Explain gradient descent"
+
+   Chunk:
+   "Gradient descent minimizes loss by updating parameters iteratively"
+
+   Is this relevant?
+   ```
+
+   The LLM outputs a relevance score or ranking.
+
+   Notes:
+
+   * Very accurate
+   * Expensive and slower
+   * Often used only for final reranking
+   * Useful for reasoning-heavy retrieval
+
+
 ---
 
 ## LangChain

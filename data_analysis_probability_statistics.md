@@ -630,8 +630,8 @@ CLT applies to the distribution of sample means, not the original data:
 Hypothesis testing is a statistical framework used to make decisions from data under uncertainty.
 
 The process involves:
-1. Starting with a claim (null hypothesis)
-1. Using data to evaluate whether this claim is likely to be true
+1. Starting with a claim
+1. Use data to evaluate whether this claim is likely to be true
 
 
 **Key Terms**
@@ -651,6 +651,8 @@ $$
 $$
 \text{If } p > \alpha \Rightarrow \text{Fail to reject } H_0
 $$
+
+In short, the p-value measures how likely our observed results would be if the null hypothesis ($H_0$) were actually true. A significance level of 5% means we are willing to accept a 5% chance of incorrectly rejecting $H_0$ due to random variation or noise. If p < 0.05, the observed results are unlikely to have occurred by chance alone, providing evidence against H0 and in favor of the alternative hypothesis (H1).
 
 ---
 
@@ -694,9 +696,10 @@ $$
 \frac{s}{\sqrt{n}} \rightarrow \text{standard error}
 $$
 
-**Key Idea***
+**Key Idea**
 
-Unlike the Z-test, the T-test accounts for extra uncertainty by using the sample standard deviation. This results in a distribution with heavier tails, especially for small sample sizes.
+In a t-test, the true population mean $(\mu)$ is usually unknown. We assume a hypothesized mean $(\mu_0)$ (eg:- drug does not work so $(\mu_0 = 0)$) under the null hypothesis and use the sample mean $(\bar{x})$ and sample standard deviation $(s)$ to test whether the observed data are consistent with that assumption.
+
 
 **Types of T-tests**
 
@@ -723,18 +726,9 @@ $$H_a: \text{Significant difference (e.g., } \mu \neq \bar{X})$$
 $$\alpha = 0.05 \; \text{(commonly used)}$$
 3. Find Critical Value:
 Use T-distribution table based on $df = n - 1$
-This is based on T-table.
+This is based on T-table which is can be formed from some complext t-distribution CDF function. 
 4. Make Decision:
-    1. If $|t_{\text{calculated}}| > t_{\text{critical}}$, reject $H_0$
-    2. Alternatively, if $\text{p-value} < \alpha$, reject $H_0$
-
-**Important Intuition**
-
-Because we estimate variability using sample data, there is more uncertainty compared to the Z-test. The T-distribution compensates for this by having heavier tails, making it more conservative.
-
-As the sample size increases:
-1. The estimate of variability improves
-2. The T-distribution becomes closer to the normal distribution
+If $|t_{\text{calculated}}| > t_{\text{critical}}$, reject $H_0$
 
 
 **Summary**
