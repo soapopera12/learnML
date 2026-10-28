@@ -30,7 +30,7 @@ The decoder on the other hand has an additional layer that focuses helps it focu
 
 ### Transformer input
 
-The input to the transformer encoder is a sentence which is a group of words. These words are converted into a embeddings using an embedding algorithm (word2vec, glove, etc). Each word vector embedding is of same size (a hyperparameter eg. 512). Each of these embeddings pass through an encoder. Each embeddings first pass through the self attention block followed by the FFN network
+The input to the transformer encoder is a sentence which is a group of words. These words are converted into a embeddings. Each word vector embedding is of same size (eg. 512). Each of these embeddings pass through an encoder. Each embeddings first pass through the self attention block followed by the FFN network
 
 <p align="center">
     <img src="pics/encoder_with_tensors.png" alt="tensor_encoder" width="500"><br>
@@ -46,12 +46,12 @@ The input to the transformer encoder is a sentence which is a group of words. Th
     <em>Self attention</em>
 </p>
 
-1. From the encoder's input create three vectors Query, Key and Value ($E_Q$, $E_K$ and $E_V$). This is formed by multiplying the input vector with three matrices that are learned during training ($W^Q$, $W^K$ and $W^V$). 
-2. Next we calculate a score. This score needs to be calculated for each word in the input to the (it is a score of attention that each word should give to each other word). It is calculated by taking a dot product of the query vector with the key vector of the respective word that we are scoring.
+1. From the encoder's input create three vectors Query, Key and Value ($E_Q$, $E_K$ and $E_V$). This is formed by multiplying the input embedding vector with three matrices that are learned during training ($W^Q$, $W^K$ and $W^V$).
+2. Next we calculate a score. This score needs to be calculated for each word in the input to the (it is a score of attention that each word should give to each other word). It is calculated by taking a **inner dot product** of the query vector with the key vector of the respective word that we are scoring.
 eg:- The hill station is chilly. Here suppose we are at word station. The we to find score for chilly and station (current word) we need to multiply the query of 'station' to key of 'chilly'.
 4. We then divide the score by 8 (basically $\sqrt{d_k}$ here $d_k$ is 512 so 8) To ensure stable gradients. 
 4. The result is then passed through a softmax operation (all scores are normalized so that they add to 1). This softmax score determines how much each word will be expressed at this current position. 
-5. Now we multiply **each** value vector by the softmax score (this keeps intact the value of words that needs to be attended to at each point). 
+5. Now we multiply each value vector by the softmax score (this keeps intact the value of words that needs to be attended to at each point). 
 6. The sixth step is to sum all the weighted value vectors. This produces the output of the self-attention layer at this position. 
 
 <p align="center">

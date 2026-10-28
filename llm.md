@@ -175,12 +175,11 @@ A deep neural transformer models can have multiple residual connections where we
 Most LLMs are trained using MPT since it can be expensive to use the fp32 parameters for both the forward pass and the backward pass which is done using scaling the parameters from fp32 to bf16. Which can lead to smaller memory based inference model based on bf16.
 
 
-    1. Forward pass: uses bf16 (or sometimes fp16). This reduces memory usage and speeds up computation.
-    1. Backward pass / gradients: stored in fp32. This preserves numerical stability during weight updates.
-    1. This technique is often called mixed-precision training or automatic mixed precision (AMP).
-    1. GPT models (OpenAI GPT-3, GPT-4, GPT-4-turbo) → mixed-precision (bf16/fp32).
-    1. Other modern LLMs (LLaMA 2/3, MPT, Falcon, Claude) → all predominantly use bf16/fp32 or fp16/fp32 mixed precision.
-
+1. Forward pass: uses bf16 (or sometimes fp16). This reduces memory usage and speeds up computation.
+1. Backward pass / gradients: stored in fp32. This preserves numerical stability during weight updates.
+1. This technique is often called mixed-precision training or automatic mixed precision (AMP).
+1. GPT models (OpenAI GPT-3, GPT-4, GPT-4-turbo) → mixed-precision (bf16/fp32).
+1. Other modern LLMs (LLaMA 2/3, MPT, Falcon, Claude) → all predominantly use bf16/fp32 or fp16/fp32 mixed precision.
 
 ---
 

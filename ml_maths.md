@@ -71,8 +71,41 @@ Effect:
 1. Linearly independent: No vector can be written using others.
 2. Basis: Minimum set of vectors to represent space
 
-Example:
-1. 2D space → need 2 independent vectors
+Understanding for a 2D plane/space:
+
+Two vectors that are not pointing in the same or opposite direction are considered linearly independent and can form a basis for the 2D plane. These two vectors can be scaled and combined to reach any point/vector in the 2D plane. 
+
+$$t = c_1v_1 + c_2v_2$$
+
+$$e.g. v_1 = [2, 1], v_2 = [-1, 1] $$
+
+For vectors $v_1$ and $v_2$ to form the basis their determinant must be non-zero.
+
+$$
+\det(\begin{bmatrix} 2 & -1 \\
+1 & 1 \end{bmatrix}) = 2(1) - (-1)(1) = 2 + 1 = 3 \neq 0
+$$
+
+So they form a basis for the 2D plane. To reach a/any specific point like (5, 4)
+
+t = [5, 4]
+
+$$
+c_1 \begin{bmatrix} 2 \\ 1 \end{bmatrix} + c_2 \begin{bmatrix} -1 \\ 1 \end{bmatrix} = \begin{bmatrix} 5 \\ 4 \end{bmatrix}
+$$
+
+$$
+2c_1 - c_2 = 5
+c_1 + c_2 = 4
+$$
+
+On solving $c_1 = 3$ and $c_2 = 1$
+
+$$
+3 \begin{bmatrix} 2 \\ 1 \end{bmatrix} + 1 \begin{bmatrix} -1 \\ 1 \end{bmatrix} = \begin{bmatrix} 5 \\ 4 \end{bmatrix}
+$$
+
+Just like this the basis vector can reach any other point in the 2D plane.
 
 ---
 
@@ -98,8 +131,83 @@ $$
 A\mathbf{v} = \lambda \mathbf{v}
 $$
 
-1. Eigenvector = which vectors remain unchanged in direction after transformation (only scale). 
+1. Eigenvector = vectors remain unchanged in direction after transformation (only scale). 
 2. Eigenvalue = scaling factor for the eigen vectors
+
+$$
+A\mathbf{v} = \lambda \mathbf{v} 
+$$
+
+$$
+(A - \lambda I)\mathbf{v} = 0
+$$
+
+Here I is the identity matrix of the same size. For a non-zero eigenvector v tp exist, the determinant of (A - λI) must be zero. This is known as the characteristic equation.
+
+For example, for a 2x2 matrix A:
+
+$$
+A = \begin{bmatrix} 2 & 1 \\
+1 & 2\end{bmatrix}
+$$
+
+$$
+A - \lambda I = \begin{bmatrix} 2 - \lambda & 1 \\
+1 & 2 - \lambda \end{bmatrix}
+$$
+
+$$
+det(A - \lambda I) = (2 - \lambda)(2 - \lambda) - 1 = \lambda^2 - 4\lambda + 3 = 0
+$$
+
+On solving this quadratic equation, we get the eigenvalues $\lambda_1 = 1$ and $\lambda_2 = 3$.
+
+For the Eigen vectors we must solve the equation (A - λI)v = 0 for each eigenvalue.
+
+1. For $\lambda$ = 1:
+
+    Substituting $\lambda$ = 1 
+
+    $$
+    \begin{bmatrix} 2 - 1 & 1 \\ 1 & 2 - 1 \end{bmatrix} \begin{bmatrix}x_1 \\ x_2 \end{bmatrix} = 0
+    $$
+
+    The matrix translates to:
+    1. 1x + 1y = 0 => x + y = 0 
+    2. 1x + 1y = 0 => x + y = 0
+
+    Both equations simplify to y = -x. We can choose x = 1, then y = -1. So the eigenvector corresponding to $\lambda$ = 1 is $v_1$ = [1, -1].
+
+2. For $\lambda$ = 3:
+
+    Similary we get $v_2$ = [1, 1] as the eigenvector corresponding to $\lambda$ = 3.
+
+---
+
+### Idea of eigen vectors and eigen values
+
+Basically it says that when we transform a vector using a matrix, some vectors only get either scaled up or down, which can be written as
+
+$$
+Av = \lambda v
+$$
+
+Here $\lambda$ is the scaling factor and v is the eigen vector. A is the transformation matrix.
+
+This can be written as
+
+$$
+Av - \lambda v = 0
+$$
+
+$$
+(A - \lambda I)v = 0
+$$
+
+So now if $det(A - \lambda I) = 0$, then it means that there exists eigen vectors for matrix A. 
+$A - \lambda I$ squishes space for a vector in a way that it is sent to the origin. Meaning the matrix needs to squish space/transform the vector such that it is sent to the origin. So why determinant? 
+
+**Because determinant is the actual volume of the space that is being transformed. So if the determinant is 0, it means that the space is squished to a lower dimension and hence the vector is sent to the origin.**
 
 ---
 
@@ -115,21 +223,6 @@ Matrix form:
 $$
 \Sigma = \text{covariance matrix}
 $$
-
----
-
-### Diagonalization and Spectral Decomposition
-
-Matrix can be broken into:
-
-$$
-A = Q \Lambda Q^{-1}
-$$
-
-1. $Q$ = eigenvectors
-2. $\Lambda$ = eigenvalues
-
-Simplifies computation
 
 ---
 

@@ -339,6 +339,63 @@ where $S^{-1}$ is the inverse of the covariance matrix.
 
 ## Probability Distributions
 
+A probability distribution is simply a way of describing how likely each possible outcome of a random event is.
+
+Example 1: Rolling a Fair Die
+
+| Outcome (X) | Probability P(X) |
+| ----------- | ---------------- |
+| 1           | 1/6              |
+| 2           | 1/6              |
+| 3           | 1/6              |
+| 4           | 1/6              |
+| 5           | 1/6              |
+| 6           | 1/6              |
+
+This table is the probability distribution of the die.
+1. Every probability is between 0 and 1.
+2. All probabilities add up to 1.
+
+Example 2: Number of Heads in Two Coin Tosses
+
+Possible outcomes:
+
+1. HH
+2. HT
+3. TH
+4. TT
+
+Now define a random variable:
+
+X = Number of Heads
+
+| Coin Toss | X |
+| --------- | - |
+| HH        | 2 |
+| HT        | 1 |
+| TH        | 1 |
+| TT        | 0 |
+
+Now count how often each value occurs.
+
+| X | Probability |
+| - | ----------- |
+| 0 | 1/4         |
+| 1 | 2/4 = 1/2   |
+| 2 | 1/4         |
+
+This is another probability distribution.
+
+It tells us:
+
+1. 25% chance of getting 0 heads
+2. 50% chance of getting 1 head
+3. 25% chance of getting 2 heads
+
+Because it shows how the total probability (which is always 1) is distributed among the possible outcomes we call it probability distribution. So every outcome gets an equal share or The probability is "distributed" unevenly in coint toss event. 
+
+However the events can either be discrete (rolling a die) or continous (Height of a person). Hence probability distribution for discrete events is represented by PMF and probability distribution for continous events is represented by PDF. 
+
 
 ### Probability Mass Function (PMF)
 
@@ -379,6 +436,99 @@ So as PMF is used for discrete data it is natural that when you have a classific
 ---
 
 ### Probability Density Function (PDF)
+
+So what does the PDF represent?
+
+Instead of probability, the PDF gives the "density" of probability.
+
+Suppose
+
+$$
+f(x)
+$$
+
+is the PDF.
+
+Notice the notation changed.
+
+Discrete:
+
+$$
+P(X=x)
+$$
+
+Continuous:
+
+$$
+f(x)
+$$
+
+The PDF itself is NOT a probability. Instead,
+
+Probability = Area under the curve.
+
+Suppose the PDF looks like
+
+Density
+
+ ^
+ |
+ |            /\
+ |          /    \
+ |        /        \
+ |______/____________\____> x
+
+The total area underneath is 1.
+
+Now suppose we want
+
+$$
+P(170 \leq X \leq 171)
+$$
+
+the area under the curve from 170 to 171.
+
+
+                /\
+              /████\
+            /███████\
+___________/█████████\________
+
+         170       171
+
+
+Mathematically,
+
+$$
+P(a \leq X \leq b)= \int_a^b ​f(x) dx
+$$
+
+This is the continuous analogue of summing probabilities in the discrete case.
+
+Another misconception is 
+
+$$
+f(170)=0.4
+$$
+
+That does NOT mean
+
+$$
+P(X=170)=0.4
+$$
+
+It means, Around 170 cm, the probability density is 0.4.
+
+Only an interval has probability.
+
+For a tiny interval,
+
+$$
+P(170 \leq X \leq 170.01) \approx f(170) \times 0.01
+$$
+
+The density tells you how much probability accumulates per unit length.
+
 
 A Probability Density Function (PDF) is used for continuous random variables. Instead of giving probability at a point, it describes how probability is distributed over a range of values.
 
@@ -672,7 +822,7 @@ A T-test is appropriate under the following conditions:
     
 **Mathematical Formula**
 
-The T-test computes a t-score:
+The T-test computes a t-score (One sample T-test):
 
 $$
 t = \frac{\bar{X} - \mu}{s / \sqrt{n}}
@@ -700,6 +850,11 @@ $$
 
 In a t-test, the true population mean $(\mu)$ is usually unknown. We assume a hypothesized mean $(\mu_0)$ (eg:- drug does not work so $(\mu_0 = 0)$) under the null hypothesis and use the sample mean $(\bar{x})$ and sample standard deviation $(s)$ to test whether the observed data are consistent with that assumption.
 
+The T-test computes a t-score (Two sample T-test):
+
+$$
+t = \frac{\bar{X_a} - X_a}{\sqrt{\frac{s_a^2}{n_a} + \frac{s_b^2}{n_b}}}
+$$
 
 **Types of T-tests**
 
@@ -989,7 +1144,7 @@ The goal is to check whether the difference in performance between A and B is st
 
 We test whether Version B improves CTR compared to Version A.
 
-**Hypothesis Formulation}
+**Hypothesis Formulation**
 
 $$
 H_0: \mu_A = \mu_B \quad (\text{no difference})

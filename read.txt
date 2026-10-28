@@ -1,0 +1,89 @@
+linear regression
+    models relationship - find straight line/hyperplane
+
+logistic regression
+    models relationship - finding line/hyperplace - best separates
+
+SVM
+    best 2 boundary / hyperplace (SV) - widest possible gap 
+
+
+
+
+
+
+Feature scaling / normalization
+
+logistic regression
+
+supervised ml technique - classification - predicts probability ip - particular class - sigmoid (logistic) function
+binary / 
+assumes linear relationship
+no understanding of non-linear decision boundaries
+log loss
+
+1. binary logistic regression : log loss with sigmoid
+2. multinomial logistic regression : Softmax regression for probabilities of all classes
+
+
+K-Means
+
+unsupervised - clustering - groups - k-clusters
+
+
+k-NN
+
+looks at the k nearest neighbors to predict op (regression or classification)
+
+
+---
+
+gradient descent
+
+optimization algo - minize loss (function op) by iteratively moving - direction - steepest descent.
+
+batch gradient descent
+stochastic gradient descent
+mini-batch gradient descent
+
+---
+
+optimizers
+
+Algortims - update - models parameters - training - how mucht he model moves - in direction of gradient
+
+===========================
+
+metrics 
+
+precision 
+
+proportion of actual TP  - from predicted positives
+
+recall
+
+proportion of total fraud model identifies from existing frauds
+
+f1
+
+harmonic mean of precision and recall - better for imbalanced datasets
+
+---
+
+cross validation
+
+split data k parts - train on k - 1 folds and test on kth fold repeating k times - average results - reliable estimate - model generalization
+
+k-fold cv
+stratified k-fold cv
+leave one out cv
+time series based cv
+
+--- 
+
+confusion matrix
+
+table - performance of classification - compares predictions vs actual labels
+multi-class classification - comapres a n * n matrix - for prediction vs actual labels
+
+===========================

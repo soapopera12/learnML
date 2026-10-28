@@ -72,9 +72,43 @@ These methods decompose the variance of the model output and attribute portions 
 
 ---
 
-## Inliners
+## Feature scaling and normalization
+
+Transform features so that they are on a similar scale. Many ML algorithms use distance, gradients or dot products which can be dominated by features with large numerical values. 
+
+### Standardization (Z-score Scaling)
+
+Transform each feature to have Mean = 0 and Standard deviation = 0.
+
+$$
+x' = \frac{x - \mu}{\sigma}
+$$
+
+So we transform each value with this function for each feature, suppose x the real value, $\mu$ is the mean and $\sigma$ is the standard deviation. Use when data has gaussian distribution and arbitary range.
+
+### Min-Max Normalization
+
+Scales features into a fixed range [0, 1]
+
+$$
+x' = \frac{x - x_{min}}{x_{max} - x_{min}}
+$$
+
+Use when data has know min and max values, need valeus between 0 and 1, or when using a neural network.
+
+### Robust scaling
+
+Uses the median and Interquartile range (IQR), making it less sensitve to outliers.
+
+$$
+x' = \frac{x - \text{Median}}{IQR}
+$$
 
 ---
+
+## Inliners
+
+
 
 ## outliers
 
@@ -87,7 +121,11 @@ An outlier is a data point that differs significantly from other observations.
 1. Compute the Mean ($\mu$) of the dataset.
 2. Compute the Standard Deviation ($\sigma$).
 3. Calculate the Z-score for each data point using the formula.
-$$Z = \frac{X - \mu}{\sigma}$$
+
+$$
+Z = \frac{X - \mu}{\sigma}
+$$
+
 4. Set a Threshold for Outliers: |z| > 3. Data points with Z-scores exceeding the threshold are considered outliers.
 5. X is the values of the current instance, $\mu$ is the mean and $\sigma$ is the standard deviation of the feature    
 

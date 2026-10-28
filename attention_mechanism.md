@@ -7,15 +7,17 @@ Attention mechanism is the core principle of transformer where a token finds the
 $$
 Q = XW_Q
 $$
+
 $$
 K = XW_K
 $$
+
 $$
 V = XW_V
 $$
 
 $$
-Attn(Q, K, V) = softmax(\frac{QK^T}{\sqrt(d_k)})V
+Attn(Q, K, V) = \text{softmax}(\frac{QK^T}{\sqrt(d_k)})V
 $$
 
 Remember here that the current tokens Query is generated and that is multiplied by the previous tokens K followed by softmax and then multiplied by previous node's V. This is done once for all the previous token to get pairwise attention scores. This can happen in a single headed model or MHA model. The vanilla attention mechanism expects that for each word we compute the query key and value every-time we encounter it at every level which can be time consuming and is the naive way.
@@ -513,18 +515,18 @@ Suppose the embedding vectors are of size d = 8, So position embedding vector ne
 Assume the sentence is 
 
 $$
-\text{I am drake}
+\text{I am batman}
 $$ 
 
 Now we know that d = 8 and position of each word (0 to 2). So for each word we need to create a vector of length d (positional embedding vector)
 
-for word 'drake' it goes like this
+for word 'batman' it goes like this
 
 $$
 d = 8
 $$
 $$
-pos = 2 \ \ \text{for word = 'drake'}
+pos = 2 \ \ \text{for word = 'batman'}
 $$
 
 then the positional encoding vector is
@@ -543,7 +545,7 @@ then the positional encoding vector is
 
 **Table: Positional Encoding Vector (d_model = 8)**
 
-All this for a single word 'drake'. This needs to be done for all the words. So what does it actually do. i is just the index of the (sin, cosine) pair that we are using.
+All this for a single word 'batman'. This needs to be done for all the words. So what does it actually do. i is just the index of the (sin, cosine) pair that we are using.
 
 
 | i | Dimension used |
